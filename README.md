@@ -7,7 +7,7 @@ Official home page is [here](http://b4k3r.github.com/cloudflare). The complete [
 
 Visit also a CloudFlare API documentation:
 
--    [Client](http://www.cloudflare.com/wiki/Client_Interface_API)
+-    [Client](http://www.cloudflare.com/docs/client-api.html)
 -    [Host](http://www.cloudflare.com/docs/host-api.html)
 
 Installation
