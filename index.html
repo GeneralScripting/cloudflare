@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="CloudFlare : A Ruby wrapper for the CloudFlare API. " />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>CloudFlare</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/B4k3r/cloudflare">View on GitHub</a>
+
+          <h1 id="project_title">CloudFlare</h1>
+          <h2 id="project_tagline">A Ruby wrapper for the CloudFlare API. </h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/B4k3r/cloudflare/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/B4k3r/cloudflare/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>CloudFlare</h1>
+
+<p>It is a Ruby wrapper for the CloudFlare API.</p>
+
+<p>Official home page is <a href="http://b4k3r.github.com/cloudflare">here</a>. The complete <a href="http://rdoc.info/github/B4k3r/cloudflare/">RDoc</a> is online.</p>
+
+<p>Visit also a CloudFlare API documentation:</p>
+
+<ul>
+<li>   <a href="http://www.cloudflare.com/docs/client-api.html">Client</a>
+</li>
+<li>   <a href="http://www.cloudflare.com/docs/host-api.html">Host</a>
+</li>
+</ul><h2>Installation</h2>
+
+<pre><code>gem install cloudflare
+</code></pre>
+
+<p>Or, if use Rails, include the gem in your Gemfile:</p>
+
+<pre><code>gem 'cloudflare'
+</code></pre>
+
+<h2>Usage</h2>
+
+<p><strong>Example for Client API:</strong></p>
+
+<pre><code>require 'cloudflare'
+
+cf = CloudFlare.new('user_api_key', 'user_email')
+output = cf.add_rec('domain.com', 'A', '212.11.6.211', 'subdomain.domain.com', true)
+
+if output['result'] == 'success'
+  puts 'Successfuly added DNS record'
+else
+  puts output['msg'] // error message
+end
+</code></pre>
+
+<p><strong>Example for Host API:</strong></p>
+
+<pre><code>require 'cloudflare'
+
+cf = CloudFlare.new('host_api_key')
+output = cf.create_user('new_user_email', 'new_password', 'new_username (optional)', 'unique id (optional)')
+
+if output['result'] == 'success'
+  puts output['msg']
+  puts "Your login is #{output['response']['cloudflare_username']}"
+else
+  puts output['msg'] // error message
+end
+</code></pre>
+
+<h2>License</h2>
+
+<p>Copyright © 2012. It is free software, and may be redistributed under the terms specified in the MIT-LICENSE file.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">CloudFlare maintained by <a href="https://github.com/B4k3r">B4k3r</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-31313218-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
+</html>
