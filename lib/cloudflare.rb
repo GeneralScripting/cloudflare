@@ -81,12 +81,22 @@ class CloudFlare
   # This function will purge CloudFlare of any cached files. It may take up to 48 hours for the cache to rebuild and optimum performance to be achieved so this function should be used sparingly. 
   #
   # @param zone The zone you'd like to run CNAMES through CloudFlare for, e.g. +example.com+.
-  # @return (Hash) fpurge_ts, cooldawn
+  # @return (Hash) fpurge_ts, cooldown
   # @return *fpurge_ts* - Time at which cache was purged.
   # @return *cooldown* - Number of seconds before the next time this call is allowed again.
 
   def purge_cache(zone)
     send_req({a: :fpurge_ts, z: zone, v: 1})    
+  end
+
+  # This function will purge a single file from CloudFlare's cache.
+  #
+  # @param zone The zone you'd like to run CNAMES through CloudFlare for, e.g. +example.com+.
+  # @param file_url The full URL of the file that needs to be purged from Cloudflare's cache. Keep in mind, that if an HTTP and an HTTPS version of the file exists, then both versions will need to be purged independently.
+  # @return *result* - string containing "success" if purge is successful
+
+  def purge_zone_file(zone, file_url)
+    send_req({a: :zone_file_purge, z: zone, url: file_url})
   end
 
   # This function checks whether one or more websites/domains are active under an account and return the zone ids (zids) for these.
