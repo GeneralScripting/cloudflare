@@ -116,8 +116,8 @@ class CloudFlare
   # @param geo Add to add longitude and latitude information to the response. 0,0 means no data.
   # @return (Hash) A list of IP addresses which hit your site classified by type.
 
-  def zone_ips(zoneid, classification, hours = 24, geo = '0,0')
-    send_req({a: :zone_ips, zid: zoneid, hours: hours, class: classification, geo: geo})  
+  def zone_ips(domain, classification, hours = 24, geo = true)
+    send_req({a: :zone_ips, z: domain, hours: hours, class: classification, geo: geo == true ? 1 : 0})  
   end
 
   # This functions updates the snapshot of your site for CloudFlare's challenge page.
@@ -153,20 +153,21 @@ class CloudFlare
   # @param content The value of the cname or IP address (the destination).
   # @param name The name of the record you wish to create.
   # @param mode False or true. false means CloudFlare is off (grey cloud) for the new zone, while true means a happy orange cloud.
+  # @param ttl 1 or int. 1 means 'automatic', otherwise, value must be in between 120 and 4,294,967,295 seconds.
 
-  def add_rec(zone, type, content, name, mode)
-    send_req({a: :rec_set, zone: zone, type: type, content: content, name: name, mode: mode == true ? 1 : 0})
+  def add_rec(zone, type, content, name, mode, ttl)
+    send_req({a: :rec_new, z: zone, type: type, content: content, name: name, ttl: ttl, service_mode: mode == true ? 1 : 0})
   end
 
   # This function deletes a DNS record.
   #
   # @note All records of the given name will be deleted. For this reason, you must pass in the full DNS name of the record you wish to remove. For +example+, +sub.foo.com+, as opposed to just sub.
   #
-  # @param zone
-  # @param name The name of the record you wish to remove.
+  # @param zone The target domain
+  # @param id DNS Record ID.
 
-  def del_rec(zone, name)
-    send_req({a: :rec_del, zone: zone, name: name})
+  def del_rec(zone, id)
+    send_req({a: :rec_delete, z: zone, id: id})
   end
 
   # This function purges the preloader's cache.
@@ -181,11 +182,16 @@ class CloudFlare
 
   # This function updates a DNS record for your site. This needs to be an A record.
   #
-  # @param ip The value of the IP address (the destination).
-  # @param hosts The name of the record you wish to adjust.
+  # @param zone The zone you'd like to run CNAMES through CloudFlare for, e.g. +example.com+.
+  # @param type Type of record - CNAME or A.
+  # @param id DNS Record ID.
+  # @param content The value of the cname or IP address (the destination).
+  # @param name The name of the record you wish to create.
+  # @param mode False or true. false means CloudFlare is off (grey cloud) for the new zone, while true means a happy orange cloud.
+  # @param ttl 1 or int. 1 means 'automatic', otherwise, value must be in between 120 and 4,294,967,295 seconds.
 
-  def update_rec(ip, hosts)
-    send_req({a: :DIUP, ip: ip, hosts: hosts})
+  def update_rec(zone, type, id, content, name, mode, ttl)
+    send_req({a: :rec_edit, z: zone, type: type, id: id, content: content, name: name, ttl: ttl, service_mode: mode == true ? 1 : 0})
   end
 
   # This function checks the threat score for a given IP.
